@@ -2,6 +2,9 @@ const express = require("express");
 const indexRoute = require("./routes/index");
 const usersRoute = require("./routes/users");
 
+// connect to db
+require("./db/mongoose");
+
 const app = express();
 
 const PORT = process.env.PORT;
