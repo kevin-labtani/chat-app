@@ -22,6 +22,9 @@ async function start() {
         await require("./db/mongoose");
         // server.listen(PORT);
         server.listen(PORT, console.log(`Server started on port ${PORT}`));
+        app.get('/chat', function(req, res) {
+          res.sendFile(path.join(__dirname, '../public', 'chat.html'));
+        });
         
         users = [];
         connections = [];
