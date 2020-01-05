@@ -3,6 +3,8 @@ const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
 const expressLayouts = require("express-ejs-layouts");
+const flash = require("connect-flash");
+const session = require("express-session");
 const chatRoute = require("./routes/chat");
 const usersRoute = require("./routes/users");
 
@@ -19,6 +21,28 @@ app.set("view engine", "ejs");
 // bodyparser middleware
 // used to parse POST request body from form data
 app.use(express.urlencoded({ extended: false }));
+
+// middleware for sessions
+// we need sessions to use connect-flash
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true
+  })
+);
+
+// middleware for connect-flash
+// used  to send message on redirect
+app.use(flash());
+
+// global variables for flashing messages
+// we want specific colors for specific messages
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash("success_msg");
+  res.locals.error_msg = req.flash("error_msg");
+  next();
+});
 
 // create a web server || express typically does this behind the scenes, but socket.io expects the server to be passed to it
 const server = http.createServer(app);
