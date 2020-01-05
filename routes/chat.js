@@ -6,8 +6,6 @@ const router = express.Router();
 router.get("/", (req, res) => res.render("welcome"));
 
 // chat route
-router.get("/chat", function(req, res) {
-  res.sendFile(path.join(__dirname, "../views/chat.html"));
-});
+router.get("/chat", (req, res) => res.render("chat"));
 
 module.exports = router;
