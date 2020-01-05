@@ -16,6 +16,10 @@ const app = express();
 app.use(expressLayouts);
 app.set("view engine", "ejs");
 
+// bodyparser middleware
+// used to parse POST request body from form data
+app.use(express.urlencoded({ extended: false }));
+
 // create a web server || express typically does this behind the scenes, but socket.io expects the server to be passed to it
 const server = http.createServer(app);
 // config socket.io to work with the server, it nows supports websockets
