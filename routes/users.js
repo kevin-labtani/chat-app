@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const validator = require("validator");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
@@ -11,8 +12,8 @@ router.get("/login", (req, res) => res.render("login"));
 router.get("/register", (req, res) => res.render("register"));
 
 // post register route
-router.post("/register", (req, res) => {
-  const { name, email, password, password2 } = req.body;
+router.post("/register", async (req, res) => {
+  let { name, email, password, password2 } = req.body;
 
   let errors = [];
 
@@ -21,14 +22,26 @@ router.post("/register", (req, res) => {
     errors.push({ msg: "Please fill in all fields" });
   }
 
+  // validate name
+  name = name.trim();
+  const regSafe = /[\^<,\"@\/\{\}\(\)\*\$%\?=>:\|]+/i;
+  if (regSafe.test(name)) {
+    errors.push({ msg: "Please enter a valid name" });
+  }
+
+  // validate email
+  if (!validator.isEmail(email)) {
+    errors.push({ msg: "Please enter a valid email" });
+  }
+
   // check pwd match
   if (password !== password2) {
     errors.push({ msg: "Passwords do not match" });
   }
 
   // check pwd length
-  if (password.length < 6) {
-    errors.push({ msg: "Password must be at least 6 characters" });
+  if (!validator.isLength(password, { min: 6, max: 15 })) {
+    errors.push({ msg: "Password must between 6 and 15 characters" });
   }
 
   if (errors.length > 0) {
@@ -41,53 +54,51 @@ router.post("/register", (req, res) => {
     });
   } else {
     // validation passed
-    User.findOne({ email }).then(user => {
-      if (user) {
-        // user already exists
-        errors.push({ msg: "Email already registered" });
+    const user = await User.findOne({ email });
 
-        res.render("register", {
-          errors,
-          name,
-          email,
-          password,
-          password2
-        });
-      } else {
-        // instantiate new user and save them to db
-        const newUser = new User({
-          name,
-          email,
-          password
-        });
+    if (user) {
+      // user already exists
+      errors.push({ msg: "Email already registered" });
 
+      res.render("register", {
+        errors,
+        name,
+        email,
+        password,
+        password2
+      });
+    } else {
+      // instantiate new user and save them to db
+      const newUser = new User({
+        name: name,
+        email,
+        password
+      });
+
+      try {
         // hash password
-        bcrypt.hash(newUser.password, 8, (err, hash) => {
-          if (err) throw err;
-          newUser.password = hash;
-          // save user
-          newUser
-            .save()
-            .then(user => {
-              // flash msg as we're redirecting
-              req.flash("success_msg", "You are now registered and can login");
-              res.redirect("/users/login");
-            })
-            .catch(e => console.log(e));
-        });
+        const hash = await bcrypt.hash(newUser.password, 8);
+        newUser.password = hash;
+        await newUser.save();
+        // flash msg as we're redirecting
+        req.flash("success_msg", "You are now registered and can login");
+        res.redirect("/users/login");
+      } catch (error) {
+        console.log(error);
       }
-    });
+    }
   }
 });
 
 // post login route
-router.post("/login", (req, res, next) => {
+router.post(
+  "/login",
   passport.authenticate("local", {
     successRedirect: "/chat",
     failureRedirect: "/users/login",
     failureFlash: true
-  })(req, res, next);
-});
+  })
+);
 
 // logout route
 router.get("/logout", (req, res) => {
