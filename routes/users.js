@@ -81,13 +81,14 @@ router.post("/register", (req, res) => {
 });
 
 // post login route
-router.post("/login", (req, res, next) => {
+router.post(
+  "/login",
   passport.authenticate("local", {
     successRedirect: "/chat",
     failureRedirect: "/users/login",
     failureFlash: true
-  })(req, res, next);
-});
+  })
+);
 
 // logout route
 router.get("/logout", (req, res) => {
