@@ -13,7 +13,7 @@ const usersRoute = require("./routes/users");
 require("./db/mongoose");
 
 // passport config
-require("./config/passport")(passport);
+require("./config/passport");
 
 // setup express
 const app = express();
