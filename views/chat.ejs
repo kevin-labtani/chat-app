@@ -1,22 +1,13 @@
 <div class="container">
   <div class="py-5 text-center">
     <a href="/users/logout" class="btn btn-secondary">Logout</a>
-    <p class="lead mb-3">Welcome <%= name %></p>
+    <p class="lead mb-3" id="name">Welcome <%= name %></p>
     <h2>Chat pro</h2>
-    <p class="lead">Your name and start</p>
   </div>
   <div class="row">
     <div class="col-6">
       <h3>Message form</h3>
       <form action="" id="messForm">
-        <label for="name">Name</label>
-        <input
-          type="text"
-          class="form-control"
-          id="name"
-          name="name"
-          placeholder="Your name"
-        />
         <br />
         <label for="message">Message</label>
         <textarea
@@ -31,7 +22,7 @@
     </div>
     <div class="col-6">
       <h3>Messages</h3>
-      <div id="all_mess"></div>
+      <div id="all_mess" class="overflow-auto" style="border: 2px solid black; height: 300px;" ></div>
     </div>
   </div>
 </div>

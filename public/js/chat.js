@@ -6,9 +6,9 @@ let submit = document.getElementById("submit");
 
 submit.addEventListener("click", e => {
   let inputText = document.getElementById("message").value;
-  let newName = document.getElementById("name").value;
+  let newName =  document.getElementById("name").innerHTML.split(' ');
   event.preventDefault();
-  socket.emit("send mess", { mess: inputText, name: newName });
+  socket.emit("send mess", { mess: inputText, name: newName.slice(1) });
   document.getElementById("message").value = "";
 });
 socket.on("add mess", function(data) {
