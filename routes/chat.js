@@ -7,10 +7,10 @@ const { ensureAuthenticated } = require("../config/auth");
 router.get("/", (req, res) => res.render("welcome"));
 
 // chat route
-router.get("/chat", ensureAuthenticated, (req, res) =>
+router.get("/chat", ensureAuthenticated, (req, res) => {
   res.render("chat", {
     name: req.user.name
   })
-);
+});
 
 module.exports = router;

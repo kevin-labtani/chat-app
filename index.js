@@ -78,6 +78,14 @@ io.sockets.on("connection", function(socket) {
   socket.on("send mess", function(data) {
     io.sockets.emit("add mess", { msg: data.mess, name: data.name });
   });
+
+  socket.on("send join", function(data) {
+    io.sockets.emit("add join", {name: data.name });
+  });
+
+  socket.on("send left", function(data) {
+    io.sockets.emit("add left", {name: data.name });
+  });
 });
 
 // middleware for routes
