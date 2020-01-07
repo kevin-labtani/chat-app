@@ -75,15 +75,20 @@ io.sockets.on("connection", function(socket) {
   socket.on("send mess", function(data) {
     io.sockets.emit("add mess", { msg: data.mess, name: data.name });
     //find the user
-    User.findOne({ name: data.name }).then(user => {
-      //  save messages in DB
-      const newMessage = new Message({
-        name: data.name.toString(),
-        message: data.mess,
-        owner: user._id
-      });
-      newMessage.save();
-    });
+    User.findOne({ name: data.name })
+      .then(user => {
+        //  save messages in DB
+        const newMessage = new Message({
+          name: data.name.toString(),
+          message: data.mess,
+          owner: user._id
+        });
+        newMessage
+          .save()
+          .then(message => console.log(message))
+          .catch(e => console.log(e));
+      })
+      .catch(e => console.log(e));
   });
 
   socket.on("send join", function(data) {

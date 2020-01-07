@@ -15,9 +15,9 @@ const MessageSchema = new mongoose.Schema({
     default: Date.now
   },
   owner: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "User"
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "User"
   }
 });
 
