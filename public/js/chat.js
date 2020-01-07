@@ -3,20 +3,26 @@ let socket = io.connect();
 let form = document.getElementById("messForm");
 let all_messages = document.getElementById("all_mess");
 let submit = document.getElementById("submit");
-let newName =  document.getElementById("name").innerHTML.split(' ');
+let newName = document.getElementById("name").innerHTML.split(" ");
 
-socket.emit("send join", {name: newName.slice(1) });
+// scroll user to bottom on new message
+const autoscroll = () => {
+  all_messages.scrollTop = all_messages.scrollHeight;
+};
+
+socket.emit("send join", { name: newName.slice(1) });
 socket.on("add join", function(data) {
   let div = document.createElement("div");
   let spanJoin = document.createElement("span");
   spanJoin.innerHTML = data.name + " joined the chat!";
   all_messages.appendChild(div);
   div.appendChild(spanJoin);
+  autoscroll();
 });
 
 const logout = document.getElementById("logout");
-logout.addEventListener('click', e => {
-    socket.emit("send left", {name: newName.slice(1) });
+logout.addEventListener("click", e => {
+  socket.emit("send left", { name: newName.slice(1) });
 });
 socket.on("add left", function(data) {
   let div = document.createElement("div");
@@ -24,6 +30,7 @@ socket.on("add left", function(data) {
   spanJoin.innerHTML = data.name + " left the chat!";
   all_messages.appendChild(div);
   div.appendChild(spanJoin);
+  autoscroll();
 });
 
 submit.addEventListener("click", e => {
@@ -42,5 +49,5 @@ socket.on("add mess", function(data) {
   all_messages.appendChild(div);
   div.appendChild(spanName);
   div.appendChild(spanMess);
-  
+  autoscroll();
 });
