@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 // create schema for our messages
 const MessageSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
   message: {
     type: String,
     required: true

@@ -84,6 +84,7 @@ io.sockets.on("connection", function(socket) {
     User.findOne({name: data.name}).then( user => {
         //  save messages in DB
         const newMessage = new Message({
+        name: data.name.toString(),
         message: data.mess,
         owner: user._id,
         });
