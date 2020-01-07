@@ -11,7 +11,6 @@ const usersRoute = require("./routes/users");
 const Message = require("./models/Message");
 const User = require("./models/User");
 
-
 // connect to db
 require("./db/mongoose");
 
@@ -66,9 +65,6 @@ const io = socketio(server);
 const publicDirectoryPath = path.join(__dirname, "/public");
 app.use(express.static(publicDirectoryPath));
 
-users = [];
-connections = [];
-
 io.sockets.on("connection", function(socket) {
   console.log("Success connection");
   connections.push(socket);
@@ -81,23 +77,23 @@ io.sockets.on("connection", function(socket) {
   socket.on("send mess", function(data) {
     io.sockets.emit("add mess", { msg: data.mess, name: data.name });
     //find the user
-    User.findOne({name: data.name}).then( user => {
-        //  save messages in DB
-        const newMessage = new Message({
+    User.findOne({ name: data.name }).then(user => {
+      //  save messages in DB
+      const newMessage = new Message({
         name: data.name.toString(),
         message: data.mess,
-        owner: user._id,
-        });
-    newMessage.save();
-   });
+        owner: user._id
+      });
+      newMessage.save();
+    });
   });
 
   socket.on("send join", function(data) {
-    io.sockets.emit("add join", {name: data.name });
+    io.sockets.emit("add join", { name: data.name });
   });
 
   socket.on("send left", function(data) {
-    io.sockets.emit("add left", {name: data.name });
+    io.sockets.emit("add left", { name: data.name });
   });
 });
 

@@ -24,6 +24,13 @@ router.post("/register", async (req, res) => {
 
   // validate name
   name = name.trim();
+  // name must be unique
+  const user = await User.findOne({ name });
+  if (user) {
+    // user already exists
+    errors.push({ msg: "Name already registered" });
+  }
+
   const regSafe = /[\^<,\"@\/\{\}\(\)\*\$%\?=>:\|]+/i;
   if (regSafe.test(name)) {
     errors.push({ msg: "Please enter a valid name" });
