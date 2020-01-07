@@ -67,10 +67,8 @@ app.use(express.static(publicDirectoryPath));
 
 io.sockets.on("connection", function(socket) {
   console.log("Success connection");
-  connections.push(socket);
 
   socket.on("disconnect", function(data) {
-    connections.splice(connections.indexOf(socket), 1);
     console.log("Disconnection");
   });
 
