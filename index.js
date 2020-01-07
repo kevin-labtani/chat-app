@@ -8,6 +8,9 @@ const session = require("express-session");
 const passport = require("passport");
 const chatRoute = require("./routes/chat");
 const usersRoute = require("./routes/users");
+const Message = require("./models/Message");
+const User = require("./models/User");
+
 
 // connect to db
 require("./db/mongoose");
@@ -77,6 +80,15 @@ io.sockets.on("connection", function(socket) {
 
   socket.on("send mess", function(data) {
     io.sockets.emit("add mess", { msg: data.mess, name: data.name });
+    //find the user
+    User.findOne({name: data.name}).then( user => {
+        //  save messages in DB
+        const newMessage = new Message({
+        message: data.mess,
+        owner: user._id,
+        });
+    newMessage.save();
+   });
   });
 
   socket.on("send join", function(data) {
