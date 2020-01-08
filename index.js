@@ -72,25 +72,23 @@ io.sockets.on("connection", function(socket) {
     console.log("Disconnection");
   });
 
-  socket.on("send mess", function(data) {
+  socket.on("send mess", async function(data) {
     io.sockets.emit("add mess", { msg: data.mess, name: data.name });
-    //find the user
-    User.findOne({ name: data.name })
-      .then(user => {
+   try {
+     //find the user
+     const user = await User.findOne({ name: data.name });
         //  save messages in DB
-        const newMessage = new Message({
-          name: data.name.toString(),
-          message: data.mess,
-          owner: user._id
-        });
-        newMessage
-          .save()
-          .then(message => console.log(message))
-          .catch(e => console.log(e));
-      })
-      .catch(e => console.log(e));
+     const newMessage = new Message({
+      name: data.name.toString(),
+      message: data.mess,
+      owner: user._id
+    });
+    await newMessage.save();
+   } catch (error) {
+    console.log(error);
+   };
   });
-
+  
   socket.on("send join", function(data) {
     io.sockets.emit("add join", { name: data.name });
   });
