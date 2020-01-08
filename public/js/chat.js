@@ -46,11 +46,21 @@ textArea.addEventListener("keyup", e => {
 
 submit.addEventListener("click", e => {
   event.preventDefault();
+  const regEx = /[<>]+/i;
   let inputText = document.getElementById("message").value;
-  const sanitText = inputText.replace(/\s{2,}/g, " ");
-  socket.emit("send mess", { mess: sanitText, name: newName.slice(1) });
-  document.getElementById("message").value = "";
-  textArea.style.border = "1px solid #ced4da";
+  const error = document.getElementById("error");
+  if (inputText.match(regEx)) {
+    // error.innerHTML = "*You may not allowed using '>' and '<' symbols";
+    error.style.color = "red";
+    error.style.opacity = "1";
+  } else {
+    const sanitText = inputText.replace(/\s{2,}/g, " ");
+    socket.emit("send mess", { mess: sanitText, name: newName.slice(1) });
+    document.getElementById("message").value = "";
+    textArea.style.border = "1px solid #ced4da";
+    error.style.opacity = "0";
+    // error.innerHTML = "";
+  }
 });
 
 socket.on("add mess", function(data) {

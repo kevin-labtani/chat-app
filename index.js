@@ -80,7 +80,7 @@ io.sockets.on("connection", function(socket) {
 
     const regSafe = /[<>]+/i;
     if (regSafe.test(mess)) {
-      return;
+      return console.log("user trieed to use forbidden caracters");
     }
 
     const sanitMess = data.mess.replace(/\s{2,}/g, " ");
