@@ -1,6 +1,8 @@
 <div class="container shadow-sm bg-light vh-100">
   <nav class="navbar navbar-light bg-light">
-    <h1>Chat pro</h1>
+    <a class="text-reset text-muted text-decoration-none" href="/">
+      <h1>DisChat</h1>
+    </a>
     <a href="/users/logout" class="btn btn-primary ml-auto " id="logout">
       Logout
     </a>
@@ -15,8 +17,10 @@
         <div class="">
           <% messages.forEach(function(message){ %>
           <div class="border-bottom border-top " style="height: 80px;">
-            <span style="font-weight: bold;"><%= message.name %>: </span>
-            <span><%= message.message %></span>
+            <span class="d-block pl-3 font-weight-bold text-info"
+              ><%= message.name %>
+            </span>
+            <span class="pl-3 pt-2"><%= message.message %></span>
           </div>
           <% }) %>
         </div>
@@ -31,7 +35,17 @@
           class="form-control"
           placeholder="Your message"
         ></textarea>
-        <input type="submit" class="btn btn-danger" value="Send" id="submit" />
+        <div id="error" style="opacity: 0; font-size: 0.8rem;">
+          *You are not allowed to use ">" and "<" symbols
+        </div>
+        <br />
+        <input
+          type="submit"
+          class="btn btn-danger"
+          value="Send"
+          id="submit"
+          disabled
+        />
       </form>
     </div>
   </div>

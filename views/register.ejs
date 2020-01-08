@@ -1,9 +1,14 @@
-<div class="container">
+<div class="container shadow-sm vh-100 bg-light">
+  <nav class="navbar navbar-light bg-light">
+    <a class="text-reset text-muted text-decoration-none" href="/">
+      <h1>DisChat</h1>
+    </a>
+  </nav>
   <div class="row mt-5">
     <div class="col-md-6 m-auto">
-      <div class="card card-body">
+      <div class="card card-body shadow-sm">
         <h1 class="text-center mb-3">
-          <i class="fas fa-user-plus"></i> Register
+          <i class="fas fa-address-card"></i> Register
         </h1>
         <%- include('./partials/messages') %>
         <form action="/users/register" method="POST">

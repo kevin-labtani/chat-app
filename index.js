@@ -72,18 +72,32 @@ io.sockets.on("connection", function(socket) {
     console.log("Disconnection");
   });
 
-  socket.on("send mess", function(data) {
-    io.sockets.emit("add mess", { msg: data.mess, name: data.name });
-    //find the user
-    User.findOne({ name: data.name }).then(user => {
+  socket.on("send mess", async function(data) {
+    const { mess, name } = data;
+    if (mess == "") {
+      return console.log("user tried to send empty message");
+    }
+
+    const regSafe = /[<>]+/i;
+    if (regSafe.test(mess)) {
+      return console.log("user trieed to use forbidden caracters");
+    }
+
+    const sanitMess = data.mess.replace(/\s{2,}/g, " ");
+    io.sockets.emit("add mess", { msg: sanitMess, name: name });
+    try {
+      //find the user
+      const user = await User.findOne({ name });
       //  save messages in DB
       const newMessage = new Message({
-        name: data.name.toString(),
-        message: data.mess,
+        name: name.toString(),
+        message: sanitMess,
         owner: user._id
       });
-      newMessage.save();
-    });
+      await newMessage.save();
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   socket.on("send join", function(data) {

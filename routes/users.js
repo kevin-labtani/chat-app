@@ -37,6 +37,11 @@ router.post("/register", async (req, res) => {
   }
 
   // validate email
+  const userEmail = await User.findOne({ email });
+  if (userEmail) {
+    // user already exists
+    errors.push({ msg: "Email already registered" });
+  }
   if (!validator.isEmail(email)) {
     errors.push({ msg: "Please enter a valid email" });
   }
@@ -45,7 +50,6 @@ router.post("/register", async (req, res) => {
   if (password !== password2) {
     errors.push({ msg: "Passwords do not match" });
   }
-
   // check pwd length
   if (!validator.isLength(password, { min: 6, max: 15 })) {
     errors.push({ msg: "Password must between 6 and 15 characters" });
@@ -61,38 +65,24 @@ router.post("/register", async (req, res) => {
     });
   } else {
     // validation passed
-    const user = await User.findOne({ email });
 
-    if (user) {
-      // user already exists
-      errors.push({ msg: "Email already registered" });
+    // instantiate new user and save them to db
+    const newUser = new User({
+      name: name,
+      email,
+      password
+    });
 
-      res.render("register", {
-        errors,
-        name,
-        email,
-        password,
-        password2
-      });
-    } else {
-      // instantiate new user and save them to db
-      const newUser = new User({
-        name: name,
-        email,
-        password
-      });
-
-      try {
-        // hash password
-        const hash = await bcrypt.hash(newUser.password, 8);
-        newUser.password = hash;
-        await newUser.save();
-        // flash msg as we're redirecting
-        req.flash("success_msg", "You are now registered and can login");
-        res.redirect("/users/login");
-      } catch (error) {
-        console.log(error);
-      }
+    try {
+      // hash password
+      const hash = await bcrypt.hash(newUser.password, 8);
+      newUser.password = hash;
+      await newUser.save();
+      // flash msg as we're redirecting
+      req.flash("success_msg", "You are now registered and can login");
+      res.redirect("/users/login");
+    } catch (error) {
+      console.log(error);
     }
   }
 });

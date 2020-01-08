@@ -20,12 +20,13 @@ const UserSchema = new mongoose.Schema({
   }
 });
 
-//add relatinship with messange collection
+// add relationship with message collection
 UserSchema.virtual("messages", {
   ref: "Message",
   localField: "_id",
-  foreignField: "owner",
+  foreignField: "owner"
 });
+
 // create a model for our users
 const User = mongoose.model("User", UserSchema);
 
