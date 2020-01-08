@@ -3,24 +3,28 @@ let socket = io.connect();
 let form = document.getElementById("messForm");
 let all_messages = document.getElementById("all_mess");
 let submit = document.getElementById("submit");
-let newName = document.getElementById("name").innerHTML.split(" ").slice(1).toString().replace(/,/g, " ");
+let newName = document
+  .getElementById("name")
+  .innerHTML.split(" ")
+  .slice(1)
+  .toString()
+  .replace(/,/g, " ");
 
 // scroll user to bottom on new message
 const autoscroll = () => {
   all_messages.scrollTop = all_messages.scrollHeight;
 };
 
-socket.emit("send join", { name: newName});
+socket.emit("send join", { name: newName });
 socket.on("add join", function(data) {
   let div = document.createElement("div");
   div.className = "border-bottom border-top";
-  div.style.height = "80px";
+  div.style.height = "60px";
   let spanJoin = document.createElement("p");
   let spanName = document.createElement("span");
   spanName.innerHTML = data.name;
-  console.log(spanName);
   spanName.className = "text-info font-weight-bold";
-  spanJoin.innerHTML = `It's a bird! It's a plane! Nevermind, it's just `;
+  spanJoin.innerHTML = "It's a bird! It's a plane! Nevermind, it's just ";
   spanJoin.className = "pl-3";
   spanJoin.appendChild(spanName);
   all_messages.appendChild(div);
@@ -30,12 +34,19 @@ socket.on("add join", function(data) {
 
 const logout = document.getElementById("logout");
 logout.addEventListener("click", e => {
-  socket.emit("send left", { name: newName});
+  socket.emit("send left", { name: newName });
 });
 socket.on("add left", function(data) {
   let div = document.createElement("div");
-  let spanJoin = document.createElement("span");
-  spanJoin.innerHTML = data.name + " left the chat!";
+  div.className = "border-bottom border-top";
+  div.style.height = "60px";
+  let spanJoin = document.createElement("p");
+  let spanName = document.createElement("span");
+  spanName.innerHTML = data.name;
+  spanName.className = "text-info font-weight-bold";
+  spanJoin.innerHTML = " left the chat";
+  spanJoin.className = "pl-3";
+  spanJoin.prepend(spanName);
   all_messages.appendChild(div);
   div.appendChild(spanJoin);
   autoscroll();
@@ -76,7 +87,7 @@ socket.on("add mess", function(data) {
   const spanName = document.createElement("span");
   spanName.className = "d-block pl-3 font-weight-bold text-info";
   div.className = "border-bottom border-top";
-  div.style.height = "80px";
+  div.style.height = "60px";
   spanName.innerHTML = data.name;
   spanName.style.fontWeight = "bold";
   const spanMess = document.createElement("span");

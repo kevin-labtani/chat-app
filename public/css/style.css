@@ -10,3 +10,13 @@
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(151, 151, 151);
 }
+
+/* hide label for message */
+.hidden {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
