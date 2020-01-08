@@ -14,11 +14,10 @@
       <div id="all_mess" class="overflow-auto border" style="height: 300px;">
         <div class="">
           <% messages.forEach(function(message){ %>
-          <div class="border-bottom border-top " style="height: 60px;">
+          <div class="border-bottom border-top " style="height: 80px;">
             <span style="font-weight: bold;"><%= message.name %>: </span>
             <span><%= message.message %></span>
           </div>
-
           <% }) %>
         </div>
       </div>
