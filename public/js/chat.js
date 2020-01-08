@@ -3,14 +3,14 @@ let socket = io.connect();
 let form = document.getElementById("messForm");
 let all_messages = document.getElementById("all_mess");
 let submit = document.getElementById("submit");
-let newName = document.getElementById("name").innerHTML.split(" ");
+let newName = document.getElementById("name").innerHTML.split(" ").slice(1).toString().replace(/,/g, " ");
 
 // scroll user to bottom on new message
 const autoscroll = () => {
   all_messages.scrollTop = all_messages.scrollHeight;
 };
 
-socket.emit("send join", { name: newName.slice(1) });
+socket.emit("send join", { name: newName});
 socket.on("add join", function(data) {
   let div = document.createElement("div");
   let spanJoin = document.createElement("span");
@@ -22,7 +22,7 @@ socket.on("add join", function(data) {
 
 const logout = document.getElementById("logout");
 logout.addEventListener("click", e => {
-  socket.emit("send left", { name: newName.slice(1) });
+  socket.emit("send left", { name: newName});
 });
 socket.on("add left", function(data) {
   let div = document.createElement("div");
@@ -55,7 +55,7 @@ submit.addEventListener("click", e => {
     error.style.opacity = "1";
   } else {
     const sanitText = inputText.replace(/\s{2,}/g, " ");
-    socket.emit("send mess", { mess: sanitText, name: newName.slice(1) });
+    socket.emit("send mess", { mess: sanitText, name: newName });
     document.getElementById("message").value = "";
     textArea.style.border = "1px solid #ced4da";
     error.style.opacity = "0";
