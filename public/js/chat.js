@@ -33,12 +33,26 @@ socket.on("add left", function(data) {
   autoscroll();
 });
 
-submit.addEventListener("click", e => {
+let textArea = document.getElementById("message");
+
+textArea.addEventListener("keyup", e => {
   let inputText = document.getElementById("message").value;
-  event.preventDefault();
-  socket.emit("send mess", { mess: inputText, name: newName.slice(1) });
-  document.getElementById("message").value = "";
+  if (inputText != "") {
+    submit.removeAttribute("disabled",);
+  } else {
+    submit.setAttribute("disabled","true");
+  }
 });
+
+submit.addEventListener("click", e => {
+  event.preventDefault();
+  let inputText = document.getElementById("message").value;
+  const sanitText = inputText.replace(/\s{2,}/g, ' ');
+  socket.emit("send mess", { mess: sanitText, name: newName.slice(1) });
+  document.getElementById("message").value = "";
+  textArea.style.border = "1px solid #ced4da";
+});
+
 socket.on("add mess", function(data) {
   let div = document.createElement("div");
   let spanName = document.createElement("span");

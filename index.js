@@ -73,22 +73,25 @@ io.sockets.on("connection", function(socket) {
   });
 
   socket.on("send mess", async function(data) {
-    io.sockets.emit("add mess", { msg: data.mess, name: data.name });
-   try {
-     //find the user
-     const user = await User.findOne({ name: data.name });
-        //  save messages in DB
-     const newMessage = new Message({
-      name: data.name.toString(),
-      message: data.mess,
-      owner: user._id
-    });
-    await newMessage.save();
-   } catch (error) {
-    console.log(error);
-   };
-  });
-  
+    if (data.mess != "") {
+      const sanitMess = data.mess.replace(/\s{2,}/g, ' ');
+      io.sockets.emit("add mess", { msg: sanitMess, name: data.name });
+      try {
+        //find the user
+        const user = await User.findOne({ name: data.name });
+           //  save messages in DB
+        const newMessage = new Message({
+         name: data.name.toString(),
+         message: data.mess,
+         owner: user._id
+       });
+       await newMessage.save();
+      } catch (error) {
+       console.log(error);
+      };
+    }
+});
+
   socket.on("send join", function(data) {
     io.sockets.emit("add join", { name: data.name });
   });
