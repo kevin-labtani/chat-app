@@ -74,25 +74,16 @@ submit.addEventListener("click", e => {
 socket.on("add mess", function(data) {
   const div = document.createElement("div");
   const spanName = document.createElement("span");
+  spanName.className = "d-block pl-3 font-weight-bold text-info";
   div.className = "border-bottom border-top";
   div.style.height = "80px";
-  spanName.innerHTML = data.name + ": ";
+  spanName.innerHTML = data.name;
   spanName.style.fontWeight = "bold";
   const spanMess = document.createElement("span");
+  spanMess.className = "pl-3 pt-2";
   spanMess.innerHTML = data.msg;
   all_messages.appendChild(div);
   div.appendChild(spanName);
   div.appendChild(spanMess);
   autoscroll();
 });
-
-const color = [
-  "#FB5633",
-  "#A7FB33",
-  "#FBBE33",
-  "#33FBED",
-  "#339CFB",
-  "#000AFF",
-  "#774AF6",
-  "#DF4AF6"
-];
