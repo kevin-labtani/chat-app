@@ -38,16 +38,16 @@ let textArea = document.getElementById("message");
 textArea.addEventListener("keyup", e => {
   let inputText = document.getElementById("message").value;
   if (inputText != "") {
-    submit.removeAttribute("disabled",);
+    submit.removeAttribute("disabled");
   } else {
-    submit.setAttribute("disabled","true");
+    submit.setAttribute("disabled", "true");
   }
 });
 
 submit.addEventListener("click", e => {
   event.preventDefault();
   let inputText = document.getElementById("message").value;
-  const sanitText = inputText.replace(/\s{2,}/g, ' ');
+  const sanitText = inputText.replace(/\s{2,}/g, " ");
   socket.emit("send mess", { mess: sanitText, name: newName.slice(1) });
   document.getElementById("message").value = "";
   textArea.style.border = "1px solid #ced4da";
