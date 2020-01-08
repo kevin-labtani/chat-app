@@ -82,7 +82,7 @@ io.sockets.on("connection", function(socket) {
            //  save messages in DB
         const newMessage = new Message({
          name: data.name.toString(),
-         message: data.mess,
+         message: sanitMess,
          owner: user._id
        });
        await newMessage.save();
