@@ -5,10 +5,10 @@
   background: #f1f1f1;
 }
 ::-webkit-scrollbar-thumb {
-  background: black;
+  background: #007bff;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(151, 151, 151);
+  background: rgb(55, 49, 128);
 }
 
 /* hide label for message */
