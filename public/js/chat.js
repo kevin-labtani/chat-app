@@ -37,11 +37,10 @@ socket.on("add online", function(data) {
   online.innerHTML = "";
   data.online.forEach(member => {
     let members = document.getElementById("members");
-      let spanJoin = document.createElement("p");
-      spanJoin.innerHTML = member;
-      spanJoin.className = "text-info font-weight-bold";
-      members.appendChild(spanJoin);
-      console.log(data.online);
+    let spanJoin = document.createElement("p");
+    spanJoin.innerHTML = member;
+    spanJoin.className = "text-info font-weight-bold";
+    members.appendChild(spanJoin);
   });
   autoscroll();
 });

@@ -14,10 +14,10 @@ router.get("/chat", ensureAuthenticated, async (req, res) => {
     res.render("chat", {
       name: req.user.name,
       messages
-    })
+    });
   } catch (error) {
     console.log(error);
-  } 
+  }
 });
 
 module.exports = router;

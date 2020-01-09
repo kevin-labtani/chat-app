@@ -100,20 +100,19 @@ io.sockets.on("connection", function(socket) {
     }
   });
 
-  
   //send a message if someone join the chat
   socket.on("send join", function(data) {
     io.sockets.emit("add join", { name: data.name });
     online.push(data.name);
-    io.sockets.emit("add online", {online});
+    io.sockets.emit("add online", { online });
   });
 
-   //send a message if someone left the chat
+  //send a message if someone left the chat
   socket.on("send left", function(data) {
     io.sockets.emit("add left", { name: data.name });
     if (online.length > 0) {
-      online = online.filter(member => member  !== data.name);
-      io.sockets.emit("add online", {online});
+      online = online.filter(member => member !== data.name);
+      io.sockets.emit("add online", { online });
     }
   });
 });
