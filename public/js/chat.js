@@ -32,6 +32,20 @@ socket.on("add join", function(data) {
   autoscroll();
 });
 
+socket.on("add online", function(data) {
+  let online = document.getElementById("members");
+  online.innerHTML = "";
+  data.online.forEach(member => {
+    let members = document.getElementById("members");
+      let spanJoin = document.createElement("p");
+      spanJoin.innerHTML = member;
+      spanJoin.className = "text-info font-weight-bold";
+      members.appendChild(spanJoin);
+      console.log(data.online);
+  });
+  autoscroll();
+});
+
 const logout = document.getElementById("logout");
 logout.addEventListener("click", e => {
   socket.emit("send left", { name: newName });
@@ -80,6 +94,7 @@ submit.addEventListener("click", e => {
     error.style.opacity = "0";
     // error.innerHTML = "";
   }
+  submit.setAttribute("disabled", "true");
 });
 
 socket.on("add mess", function(data) {

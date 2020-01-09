@@ -10,7 +10,7 @@ const chatRoute = require("./routes/chat");
 const usersRoute = require("./routes/users");
 const Message = require("./models/Message");
 const User = require("./models/User");
-
+let online = [];
 // connect to db
 require("./db/mongoose");
 
@@ -100,12 +100,21 @@ io.sockets.on("connection", function(socket) {
     }
   });
 
+  
+  //send a message if someone join the chat
   socket.on("send join", function(data) {
     io.sockets.emit("add join", { name: data.name });
+    online.push(data.name);
+    io.sockets.emit("add online", {online});
   });
 
+   //send a message if someone left the chat
   socket.on("send left", function(data) {
     io.sockets.emit("add left", { name: data.name });
+    if (online.length > 0) {
+      online = online.filter(member => member  !== data.name);
+      io.sockets.emit("add online", {online});
+    }
   });
 });
 
