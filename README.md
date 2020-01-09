@@ -1,6 +1,6 @@
 # Chat App
 
-![Aperçu du projet - capture d’écran](./)
+![Aperçu du projet - capture d’écran](./img/screenshot.png)
 
 ## Présentation du Projet
 
@@ -8,15 +8,16 @@ Projet créé le 03 Janvier 2020 dans le cadre de la formation Web Developer don
 
 Le projet est réalisé sur base des [instructions données](https://github.com/becodeorg/CRL-Woods-2.15/blob/master/Projects/Chat/Node/chat.md).
 
-Le projet est hébergé sur Heroku: [woodschat]().
+Le projet est hébergé sur Heroku: [becode-dischat](https://becode-dischat.herokuapp.com/)
 
-### **[Chat App](https://github.com/kevin-labtani/chat-app)**
+### **[Chat App](https://becode-dischat.herokuapp.com/)**
 
 Le Projet consiste en une application de chat:
 
 - Un système de login est implémenté avec [passport](http://www.passportjs.org/). Les utilisateurs doivent s'enregistrer et puis se logger avant d'accéder à l'application de chat. Chaque utilisateur doit avoir un nom (pseudonyme) et une adresse email unique.
 - Les utilisateurs et messages sont validés et puis stockés dans une base de donnée NoSQL sur [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) dans leur collections respectives.
 - Les messages de chat envoyés persistent entre sessions.
+- Une liste des utilisateurs actuellement connectés est disponible sur la page de chat.
 
 ## Contributeurs
 
