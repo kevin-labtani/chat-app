@@ -103,7 +103,9 @@ io.sockets.on("connection", function(socket) {
   //send a message if someone join the chat
   socket.on("send join", function(data) {
     io.sockets.emit("add join", { name: data.name });
-    online.push(data.name);
+    if (!online.find(person => person === data.name)) {
+      online.push(data.name);
+    }
     io.sockets.emit("add online", { online });
   });
 
