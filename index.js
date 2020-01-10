@@ -73,14 +73,15 @@ io.sockets.on("connection", function(socket) {
   });
 
   socket.on("send mess", async function(data) {
-    const { mess, name } = data;
+    let { mess, name } = data;
+    mess = mess.trim();
     if (mess == "") {
       return console.log("user tried to send empty message");
     }
 
     const regSafe = /[<>]+/i;
     if (regSafe.test(mess)) {
-      return console.log("user trieed to use forbidden caracters");
+      return console.log("user tried to use forbidden caracters");
     }
 
     const sanitMess = data.mess.replace(/\s{2,}/g, " ");
